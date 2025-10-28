@@ -4,3 +4,4 @@ requests
 yfinance
 bcrypt
 plotly
+huggingface_hub
