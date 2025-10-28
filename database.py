@@ -7,7 +7,19 @@ def init_database():
     conn = sqlite3.connect(db_path, timeout=10)
     cursor = conn.cursor()
     
-    # === CREATE ALL TABLES FIRST ===
+    # Check if users table exists and has 'id' column; drop if corrupted
+    try:
+        cursor.execute("SELECT 1 FROM users LIMIT 1")
+        # Table exists; check columns
+        columns = [row[1] for row in cursor.execute("PRAGMA table_info(users)").fetchall()]
+        if 'id' not in columns:
+            cursor.execute("DROP TABLE users")
+            print("Dropped corrupted users table.")
+    except sqlite3.OperationalError:
+        # Table doesn't exist; that's fine, we'll create it
+        pass
+    
+    # === CREATE ALL TABLES ===
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
