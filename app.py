@@ -17,7 +17,7 @@ from auth import authenticate_user
 load_dotenv()
 
 # ------------------------------------------------------------------
-# LOTTIE ANIMATION (man in suit)
+# LOTTIE ANIMATION (working businessman/suit animation)
 # ------------------------------------------------------------------
 LOTTIE_URL = "https://assets4.lottiefiles.com/packages/lf20_yf3k.json"
 
@@ -71,10 +71,10 @@ def landing_page():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("**Log in**", use_container_width=True):
+        if st.button("**Log in**", width="stretch"):
             st.session_state.page = "login"
     with col2:
-        if st.button("**Sign up**", use_container_width=True):
+        if st.button("**Sign up**", width="stretch"):
             st.session_state.page = "signup"
     st.rerun()
 
