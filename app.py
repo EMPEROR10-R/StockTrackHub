@@ -1,6 +1,7 @@
 # C:\Users\J\Downloads\StockTrackHub\app.py
 import streamlit as st
 import os
+os.system("pip install python-dotenv")
 from dotenv import load_dotenv
 import sqlite3
 from datetime import datetime, timedelta
