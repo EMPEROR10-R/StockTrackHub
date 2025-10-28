@@ -1,5 +1,6 @@
 streamlit
 python-dotenv
-huggingface_hub
-plotly
+sqlite3
+requests
 yfinance
+bcrypt
