@@ -19,7 +19,7 @@ load_dotenv()
 # ------------------------------------------------------------------
 # LOTTIE ANIMATION (man in suit)
 # ------------------------------------------------------------------
-LOTTIE_URL = "https://assets9.lottiefiles.com/packages/lf20_6c8sjy3l.json"
+LOTTIE_URL = "https://assets4.lottiefiles.com/packages/lf20_yf3k.json"
 
 def load_lottieurl(url: str):
     r = requests.get(url)
