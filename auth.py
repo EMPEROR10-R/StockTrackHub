@@ -62,19 +62,12 @@ def register_user(email, username, password):
         return False, f"Database error: {str(e)}"
 
 def authenticate_user(username, password):
-    """Authenticate a user"""
+    """Return the full user row (id, email, password_hash, username, tier, balance_usd) or None"""
     conn = sqlite3.connect('stock_tracker.db', timeout=10)
     cursor = conn.cursor()
-    
-    try:
-        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
-        user = cursor.fetchone()
-        conn.close()
-        
-        if user and verify_password(password, user[2]):  # user[2] is password_hash
-            return user
-        return None
-    except sqlite3.Error as e:
-        conn.close()
-        print(f"Authentication error: {str(e)}")
-        return None
+    cursor.execute("SELECT id, email, password_hash, username, tier, balance_usd FROM users WHERE username = ?", (username,))
+    user = cursor.fetchone()
+    conn.close()
+    if user and verify_password(password, user[2]):   # password_hash is column 2
+        return user
+    return None
