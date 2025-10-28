@@ -1,5 +1,5 @@
 # --------------------------------------------------------------
-# app.py  (replace the whole file with the code below)
+# app.py  (REPLACE ENTIRE FILE WITH THIS)
 # --------------------------------------------------------------
 import streamlit as st
 import os
@@ -11,15 +11,15 @@ import pages.dashboard as dashboard
 import pages.portfolio as portfolio
 import pages.ai_assistant as ai_assistant
 import pages.admin as admin
-import requests   # <-- for Lottie
-from auth import authenticate_user   # <-- use the robust auth module
+import requests
+from auth import authenticate_user
 
 load_dotenv()
 
 # ------------------------------------------------------------------
 # LOTTIE ANIMATION (man in suit)
 # ------------------------------------------------------------------
-LOTTIE_URL = "https://assets9.lottiefiles.com/packages/lf20_6c8sjy3l.json"  # man in suit
+LOTTIE_URL = "https://assets9.lottiefiles.com/packages/lf20_6c8sjy3l.json"
 
 def load_lottieurl(url: str):
     r = requests.get(url)
@@ -28,16 +28,14 @@ def load_lottieurl(url: str):
     return r.json()
 
 # ------------------------------------------------------------------
-# DB INITIALISATION (kept from your original file)
+# DB INITIALISATION
 # ------------------------------------------------------------------
 def init_db():
-    # the original init_db() that drops old tables is **removed**.
-    # We only want to call the clean init from database.py
     from database import init_database
     init_database()
 
 # ------------------------------------------------------------------
-# AUTH HELPERS (using auth.py)
+# AUTH
 # ------------------------------------------------------------------
 def do_login(username: str, password: str):
     user = authenticate_user(username, password)
@@ -58,7 +56,7 @@ def logout():
         del st.session_state[key]
 
 # ------------------------------------------------------------------
-# UI: LANDING / LOGIN
+# PAGES
 # ------------------------------------------------------------------
 def landing_page():
     st.title("Stock Tracker Hub")
@@ -87,7 +85,7 @@ def login_page():
         st.lottie(lottie_json, height=200, key="login_lottie")
 
     with st.form("login_form"):
-        username = st.text_input("Username", placeholder="e.g. ADMIN-YOO")
+        username = st.text_input("Username", placeholder="e.g. adminyoo")
         password = st.text_input("Password", type="password")
         submit = st.form_submit_button("Login")
         if submit:
@@ -98,12 +96,11 @@ def login_page():
             else:
                 st.error("Invalid credentials")
 
-    if st.button("← Back to Home"):
+    if st.button("Back to Home"):
         st.session_state.page = "landing"
         st.rerun()
 
 def signup_page():
-    # (you already have a solid register_user in auth.py – reuse it)
     from auth import register_user
     st.title("Create Account")
     with st.form("signup_form"):
@@ -120,14 +117,10 @@ def signup_page():
             else:
                 st.error(msg)
 
-# ------------------------------------------------------------------
-# MAIN APP (after login) – sidebar with the items from the picture
-# ------------------------------------------------------------------
 def main_app():
     st.sidebar.image("https://via.placeholder.com/150x50?text=Logo", use_container_width=True)
     st.sidebar.title(f"Hi, {st.session_state.user['username']} ({st.session_state.user['tier']})")
 
-    # ----- navigation items exactly as in the screenshot -----
     nav_items = [
         ("app", "Home / Dashboard"),
         ("dashboard", "Dashboard"),
@@ -139,7 +132,6 @@ def main_app():
 
     choice = st.sidebar.radio("Navigate", [label for _, label in nav_items], key="nav")
 
-    # map label → page function
     page_map = {
         "Home / Dashboard": dashboard.show,
         "Dashboard": dashboard.show,
@@ -155,7 +147,7 @@ def main_app():
         st.rerun()
 
 # ------------------------------------------------------------------
-# PAGE ROUTER
+# ROUTER
 # ------------------------------------------------------------------
 def router():
     if "page" not in st.session_state:
@@ -171,7 +163,7 @@ def router():
         main_app()
 
 # ------------------------------------------------------------------
-# ENTRY POINT
+# MAIN
 # ------------------------------------------------------------------
 def main():
     init_db()
