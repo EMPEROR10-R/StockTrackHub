@@ -75,13 +75,13 @@ def init_database():
     ''')
     
     # Create admin user if not exists
-    cursor.execute("SELECT id FROM users WHERE username = ? OR email = ?", ('ADMIN-YOO', 'kingmumo15@gmail.com'))
+    cursor.execute("SELECT id FROM users WHERE username = ? OR email = ?", ('adminyoo', 'kingmumo15@gmail.com'))
     if not cursor.fetchone():
         from auth import hash_password
         admin_hash = hash_password('adminyoopassword')
         cursor.execute(
             "INSERT INTO users (email, password_hash, username, tier, balance_usd) VALUES (?, ?, ?, ?, ?)",
-            ('kingmumo15@gmail.com', admin_hash, 'ADMIN-YOO', 'Diamond', 10000.0)
+            ('kingmumo15@gmail.com', admin_hash, 'adminyoo', 'Diamond', 10000.0)
         )
     
     conn.commit()
