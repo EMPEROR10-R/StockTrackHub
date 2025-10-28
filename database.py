@@ -7,7 +7,7 @@ def init_database():
     conn = sqlite3.connect(db_path, timeout=10)
     cursor = conn.cursor()
     
-    # Users table
+    # === CREATE ALL TABLES FIRST ===
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,7 +20,6 @@ def init_database():
         )
     ''')
     
-    # Transactions table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +34,6 @@ def init_database():
         )
     ''')
     
-    # Watchlists table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS watchlists (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,7 +45,6 @@ def init_database():
         )
     ''')
     
-    # Portfolio table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS portfolio (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,7 +57,6 @@ def init_database():
         )
     ''')
     
-    # Alerts table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS alerts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,8 +69,8 @@ def init_database():
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     ''')
-    
-    # Create admin user if not exists
+
+    # === NOW CREATE ADMIN USER (after tables exist) ===
     cursor.execute("SELECT id FROM users WHERE username = ? OR email = ?", ('adminyoo', 'kingmumo15@gmail.com'))
     if not cursor.fetchone():
         from auth import hash_password
@@ -83,7 +79,7 @@ def init_database():
             "INSERT INTO users (email, password_hash, username, tier, balance_usd) VALUES (?, ?, ?, ?, ?)",
             ('kingmumo15@gmail.com', admin_hash, 'adminyoo', 'Diamond', 10000.0)
         )
-    
+
     conn.commit()
     conn.close()
 
